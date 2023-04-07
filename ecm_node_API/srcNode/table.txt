@@ -1,0 +1,10 @@
+
+# customer
+    customer_id PK 
+    firstname
+    lastname
+    gender
+    dob
+    username
+    password
+    create_at
