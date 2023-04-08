@@ -7,6 +7,7 @@ app.get("/",(req,res)=>{
     res.send("Hello welcome Node ")
 })
 require("./src/route/customer.route")(app)
+require("./src/route/category.route")(app)
 
 const port = 8080
 app.listen(port,()=>{
