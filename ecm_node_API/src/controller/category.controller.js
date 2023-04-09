@@ -1,26 +1,26 @@
 const db = require("../config/DB.config")
 const category = require("../route/category.route")
+
 const getOne=(req,res)=>{
-var category_id=req.params.id
-var getOneSQL="SELECT * FROM category WHERE category_id =?"
-var sqlparam=[category_id]
-db.query(getOneSQL,sqlparam,(error,rows)=>{
-    if(error){
-        res.json({
-            message:error
-        })
-    }else{
-        res.json({
-            data:rows
-        })
-    }
-})
+    var {id}=req.params
+    db.query("SELECT * FROM category WHERE category_id =?",[id],(error,rows)=>{
+        if(error){
+            res.json({
+                message:error
+            })
+        }else{
+            res.json({
+                data:rows
+            })
+        }
+    })
 }
 const getAll=(req,res)=>{
     var select="SELECT * FROM category"
     db.query(select,(error,rows)=>{
         if(error){
             res.json({
+                error:true,
                 message:error
             })
         }else{
@@ -54,11 +54,44 @@ const create=(req,res)=>{
     })
 }
 const update=(req,res)=>{
-    
+    var {category_id,name,description,image}=req.body
+    if (name==null || name==""){
+        res.json({
+            error:true,
+            message:"Plz fill the category name!"
+        })
+    }else if(category_id==null ||category_id==""){
+        res.json({
+            error:true,
+            message:"Plz fill the category category_id!"
+        })
+    }
+    var sqlparam=[name,description,image,category_id]
+    db.query("UPDATE category SET name=?, description=?, image=? WHERE category_id=?",sqlparam,(error,rows)=>{
+        if(error){
+            res.json({
+                message:error,
+            })
+        }else{
+            res.json({
+                message:"Updated"
+            })
+         
+        }
+    })
 }
 const remove=(req,res)=>{
-    res.json({
-        message:"remove gategory"
+    var {id}=req.params
+    db.query("DELETE FROM category WHERE category_id =?",[id],(error,rows)=>{
+        if(error){
+            res.json({
+                message:error
+            })
+        }else{
+            res.json({
+                message:"Data has been deleted"
+            })
+        }
     })
 }
 
